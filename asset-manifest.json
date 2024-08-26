@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/mabidieth1/Energy-Plan-Calculator.git/static/css/main.e278fb74.css",
-    "main.js": "/mabidieth1/Energy-Plan-Calculator.git/static/js/main.7c0d5c5b.js",
-    "static/media/JustEnergyLogo.png": "/mabidieth1/Energy-Plan-Calculator.git/static/media/JustEnergyLogo.4940860c98d921a79863.png",
-    "index.html": "/mabidieth1/Energy-Plan-Calculator.git/index.html",
-    "main.e278fb74.css.map": "/mabidieth1/Energy-Plan-Calculator.git/static/css/main.e278fb74.css.map",
-    "main.7c0d5c5b.js.map": "/mabidieth1/Energy-Plan-Calculator.git/static/js/main.7c0d5c5b.js.map"
+    "main.css": "/static/css/main.e278fb74.css",
+    "main.js": "/static/js/main.4ec903dc.js",
+    "static/media/JustEnergyLogo.png": "/static/media/JustEnergyLogo.4940860c98d921a79863.png",
+    "index.html": "/index.html",
+    "main.e278fb74.css.map": "/static/css/main.e278fb74.css.map",
+    "main.4ec903dc.js.map": "/static/js/main.4ec903dc.js.map"
   },
   "entrypoints": [
     "static/css/main.e278fb74.css",
-    "static/js/main.7c0d5c5b.js"
+    "static/js/main.4ec903dc.js"
   ]
 }
