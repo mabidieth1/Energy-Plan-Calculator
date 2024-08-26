@@ -1,0 +1,85 @@
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #eef4e9;
+  color: #0b3069;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.App {
+  text-align: center;
+  padding: 20px;
+}
+
+.App-header {
+  background-color: #0b3069;
+  padding: 20px;
+  color: white;
+}
+
+.App-logo {
+  width: 150px;
+  margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #87ba14;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button {
+  background-color: #0b3069;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+button:hover {
+  background-color: #87ba14;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 20px;
+  color: #87ba14;
+}
+
+.result-section {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.result-section h2 {
+  margin-bottom: 10px;
+}
+
+.chart-container {
+  margin-top: 40px;
+}
+
+.recommended-choice {
+  background-color: #87ba14;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 40px;
+  text-align: center;
+}

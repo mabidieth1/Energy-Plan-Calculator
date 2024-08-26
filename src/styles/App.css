@@ -1,0 +1,119 @@
+/* src/styles/App.css */
+
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #eef4e9; /* willow-brook */
+  color: #0b3069; /* madison */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* App Container */
+.App {
+  text-align: center;
+  padding: 20px;
+}
+
+/* Header */
+.App-header {
+  background-color: #0b3069; /* madison */
+  padding: 20px;
+  color: white;
+  display: flex; /* Center logo and title */
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap; /* Allow logo and title to wrap */
+}
+
+.App-logo {
+  width: 150px;
+  margin-right: 20px; /* Space between logo and title */
+  max-width: 100%; /* Make sure logo never exceeds container width */
+  height: auto; /* Maintain aspect ratio */
+
+  @media (max-width: 768px) {
+    margin-bottom: 10px; /* Add space below logo on mobile */
+  }
+}
+
+/* Form Styles */
+.input-form {
+  background-color: #87ba14; /* lima */
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.input-form label {
+  color: white;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input-form input,
+.input-form select {
+  width: calc(100% - 22px); /* Adjust for padding */
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #e6f0d9; /* light-lima */
+  border-radius: 5px;
+  font-size: 16px;
+  text-align: center; /* Center input data */
+}
+
+.input-form button {
+  background-color: #0b3069; /* madison */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease; /* Smooth transition for hover */
+}
+
+.input-form button:hover {
+  background-color: #586c8e; /* waikawa-gray */
+}
+
+/* Results Display */
+.result-section {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 30px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.result-section h2 {
+  color: #0b3069; /* madison */
+  margin-bottom: 15px;
+}
+
+.result-section h3 {
+  font-size: 18px;
+  color: #87ba14; /* lima */
+  margin-top: 20px;
+}
+
+.result-section p {
+  margin-bottom: 8px;
+}
+
+.chart-container {
+  margin-top: 40px;
+  border: 2px solid #e6f0d9; /* Light border for depth */
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f7f7f7; /* Very light gray background */
+}
+
+.recommended-choice {
+  background-color: #87ba14; /* lima */
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 40px;
+  text-align: center;
+}
