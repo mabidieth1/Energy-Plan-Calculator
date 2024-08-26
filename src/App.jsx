@@ -31,7 +31,7 @@ function App() {
         <img
           src={logo}
           alt="Just Energy logo"
-          className="App-logo h-12 w-auto max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl"
+          className="App-logo h-16 w-auto max-w-[70%] sm:max-w-[50%] md:max-w-[40%] lg:max-w-[30%] xl:max-w-[25%]"
         />
         <h1 className="text-2xl sm:text-3xl font-bold">
           Energy Plan Calculator
