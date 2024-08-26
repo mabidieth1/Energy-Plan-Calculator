@@ -26,14 +26,18 @@ body {
   flex-wrap: wrap; /* Allow logo and title to wrap */
 }
 
+/* Logo Styles */
 .App-logo {
   width: 150px;
   margin-right: 20px; /* Space between logo and title */
   max-width: 100%; /* Make sure logo never exceeds container width */
   height: auto; /* Maintain aspect ratio */
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
+  .App-logo {
     margin-bottom: 10px; /* Add space below logo on mobile */
+    width: 100px; /* Adjust the logo size for mobile screens */
   }
 }
 
