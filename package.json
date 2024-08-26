@@ -2,7 +2,7 @@
   "name": "energy-plan-calculator",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/mabidieth1/Energy-Plan-Calculator.git",
+  "homepage": "https://github.com/mabidieth1/Energy-Plan-Calculator",
   "dependencies": {
     "chart.js": "^4.4.3",
     "chartjs-plugin-annotation": "^3.0.1",
