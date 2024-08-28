@@ -1,87 +1,83 @@
 import { useState } from "react";
-import {
-  PRICE_INCREASE_SCENARIOS,
-  calculateTotalCosts,
-  calculateSavings,
-  calculateBreakEven,
-  calculateChartData,
-} from "../utils/calculations";
+import { calculateResults, calculateMonthlyCost } from "../utils/calculations";
 
 export function useEnergyCalculator() {
+  // eslint-disable-next-line no-unused-vars
   const [inputs, setInputs] = useState({
-    baseRate: 0.1,
-    monthlyUsage: 1000,
-    TDUCharge: 3.42,
-    usageCharge: 0.046384,
-    minUsageFee: 4.99,
+    averagePricePerKw: "",
+    monthlyUsage: "",
+    baseCharge: "",
     contractLength: 5,
-    ETF: 100,
-    priceIncreaseScenario: "MODERATE_CASE",
   });
 
   const [results, setResults] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const calculateResults = () => {
-    console.log("Calculating results..."); // Debugging
+  const calculate = (formValues) => {
+    console.log("Calculating results...");
     setIsLoading(true);
     setError(null);
 
     try {
-      const priceIncrease =
-        PRICE_INCREASE_SCENARIOS[inputs.priceIncreaseScenario];
-      console.log("Price increase:", priceIncrease); // Debugging
+      const averagePricePerKw = parseFloat(formValues.averagePricePerKw);
+      const monthlyUsage = parseInt(formValues.monthlyUsage, 10);
+      const baseCharge = parseFloat(formValues.baseCharge);
 
-      // Validate inputs
       if (
-        inputs.baseRate <= 0 ||
-        inputs.monthlyUsage <= 0 ||
-        inputs.contractLength <= 0
+        (formValues.averagePricePerKw !== "" &&
+          (isNaN(averagePricePerKw) || averagePricePerKw <= 0)) ||
+        (formValues.monthlyUsage !== "" &&
+          (isNaN(monthlyUsage) || monthlyUsage <= 0)) ||
+        (formValues.baseCharge !== "" && (isNaN(baseCharge) || baseCharge < 0))
       ) {
         throw new Error("Invalid input values. Please check your entries.");
       }
 
-      const totalCosts = calculateTotalCosts(inputs, priceIncrease);
-      console.log("Total costs:", totalCosts); // Debugging
+      const calculationResults = calculateResults({
+        averagePricePerKw,
+        monthlyUsage,
+        baseCharge,
+        contractLength: 5,
+      });
+      console.log("Calculation results:", calculationResults);
 
-      const savings = calculateSavings(totalCosts);
-      const breakEvenMonths = calculateBreakEven(
-        savings,
-        inputs.ETF,
-        inputs.contractLength
+      console.log("chartData:", calculationResults.chartData);
+
+      const monthlySavingsCurrent = calculateMonthlyCost({
+        averagePricePerKw,
+        monthlyUsage,
+        baseCharge,
+      });
+      const monthlySavingsEnergySavers = calculateMonthlyCost({
+        averagePricePerKw: averagePricePerKw * 0.95,
+        monthlyUsage,
+        baseCharge,
+      });
+      const monthlySavingsFreeWeekends = calculateMonthlyCost({
+        averagePricePerKw,
+        monthlyUsage: monthlyUsage * 0.8,
+        baseCharge,
+      });
+
+      const bestMonthlySavings = Math.max(
+        monthlySavingsCurrent - monthlySavingsEnergySavers,
+        monthlySavingsCurrent - monthlySavingsFreeWeekends
       );
-      const chartData = calculateChartData(inputs, priceIncrease);
 
-      const recommendedPlan =
-        totalCosts.energySavers < totalCosts.freeWeekends
-          ? "Energy Savers"
-          : "Free Weekends";
-
-      const newResults = {
-        currentPlanTotalCost: totalCosts.currentPlan,
-        energySaversTotalCost: totalCosts.energySavers,
-        freeWeekendsTotalCost: totalCosts.freeWeekends,
-        potentialSavings: savings,
-        breakEvenPoint: breakEvenMonths,
-        chartData: chartData,
-        inputs: inputs,
-        recommendedChoice:
-          savings > 0
-            ? `You could be saving $${(
-                savings /
-                (inputs.contractLength * 12)
-              ).toFixed(
-                2
-              )} per month! Switch to the ${recommendedPlan} plan for optimal savings.`
-            : "Your current plan appears to be the most cost-effective option at this time.",
-        recommendedPlan,
-      };
-
-      console.log("New results:", newResults); // Debugging
-      setResults(newResults);
+      setResults({
+        ...calculationResults,
+        potentialSavings: calculationResults.savings,
+        monthlySavings: bestMonthlySavings,
+        inputs: {
+          averagePricePerKw,
+          monthlyUsage,
+          baseCharge,
+          contractLength: 5,
+        },
+      });
     } catch (err) {
-      console.error("Error in calculations:", err); // Debugging
+      console.error("Error in calculations:", err);
       setError(err.message);
       setResults(null);
     } finally {
@@ -91,9 +87,8 @@ export function useEnergyCalculator() {
 
   return {
     inputs,
-    setInputs,
     results,
-    calculateResults,
+    calculate,
     error,
     isLoading,
   };

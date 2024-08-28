@@ -7,7 +7,7 @@ import logo from "./assets/JustEnergyLogo.png";
 import "./styles/App.css";
 
 function App() {
-  const { inputs, setInputs, results, calculateResults, error, isLoading } =
+  const { inputs, results, calculate, error, isLoading } =
     useEnergyCalculator();
   const [showResults, setShowResults] = useState(false);
 
@@ -17,10 +17,20 @@ function App() {
     config: { duration: 1000 },
   });
 
-  const handleCalculate = () => {
-    calculateResults();
+  const handleCalculate = (values, { setSubmitting }) => {
+    calculate(values);
     setShowResults(true);
+    setSubmitting(false);
   };
+
+  // Data processing for charts
+  const formattedChartData =
+    results?.chartData.map((dataPoint, index) => ({
+      year: index + 1,
+      currentPlan: dataPoint.currentPlan,
+      energySavers: dataPoint.energySavers,
+      freeWeekends: dataPoint.freeWeekends,
+    })) || [];
 
   return (
     <animated.div
@@ -31,7 +41,7 @@ function App() {
         <img
           src={logo}
           alt="Just Energy logo"
-          className="App-logo h-16 w-auto max-w-[70%] sm:max-w-[50%] md:max-w-[40%] lg:max-w-[30%] xl:max-w-[25%]"
+          className="App-logo h-24 w-auto max-w-[70%] sm:max-w-[50%] md:max-w-[40%] lg:max-w-[30%] xl:max-w-[25%]"
         />
         <h1 className="text-2xl sm:text-3xl font-bold">
           Energy Plan Calculator
@@ -40,15 +50,7 @@ function App() {
 
       <main className="container mx-auto p-4">
         <section className="mb-8 bg-white rounded-lg shadow-lg p-6">
-          <h2 className="text-xl font-semibold mb-4">
-            Enter Your Energy Usage Details
-          </h2>
-          <EnergyPlanForm
-            inputs={inputs}
-            setInputs={setInputs}
-            onCalculate={handleCalculate}
-            isLoading={isLoading}
-          />
+          <EnergyPlanForm onSubmit={handleCalculate} initialValues={inputs} />
         </section>
 
         {isLoading && (
@@ -67,12 +69,32 @@ function App() {
           </div>
         )}
 
-        {showResults && results && <ResultsDisplay results={results} />}
+        {showResults && results && (
+          <ResultsDisplay
+            results={{
+              ...results,
+              currentPlanTotalCost: results.planCosts.currentPlan,
+              energySaversTotalCost: results.planCosts.energySavers,
+              freeWeekendsTotalCost: results.planCosts.freeWeekends,
+              chartData: formattedChartData,
+            }}
+          />
+        )}
       </main>
 
       <footer className="bg-waikawa-gray text-white p-4 mt-8">
         <p className="text-center">
-          &copy; 2024 Just Energy. All rights reserved.
+          © 2024 Texas Energy Calculator. All rights reserved.
+        </p>
+        {/* Disclaimer */}
+        <p className="text-center text-[8px] mt-24 mb-4 mx-auto max-w-2xl text-gray-500">
+          Disclaimer: The Energy Plan Calculator provides estimated savings
+          based on the information provided and current market rates. Actual
+          savings may vary. This tool is for informational purposes only and
+          should not be considered as financial advice. We do not guarantee the
+          accuracy of the results and are not liable for any decisions made
+          based on this calculator's outputs. Please consult with a professional
+          for personalized advice.
         </p>
       </footer>
     </animated.div>
