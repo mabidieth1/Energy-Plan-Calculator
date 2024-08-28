@@ -9,8 +9,8 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  AreaChart,
-  Area,
+  LineChart,
+  Line,
 } from "recharts";
 import Confetti from "./Confetti";
 
@@ -32,13 +32,7 @@ function ResultsDisplay({ results }) {
   });
 
   const savingsAnimation = useSpring({
-    number: results.potentialSavings,
-    from: { number: 0 },
-    config: config.molasses,
-  });
-
-  const breakEvenAnimation = useSpring({
-    number: results.breakEvenPoint,
+    number: results?.potentialSavings || 0,
     from: { number: 0 },
     config: config.molasses,
   });
@@ -54,26 +48,25 @@ function ResultsDisplay({ results }) {
   const totalCostData = [
     {
       name: "Current Plan",
-      cost: results.currentPlanTotalCost,
+      cost: results?.currentPlanTotalCost || 0,
       fill: COLORS.red,
     },
     {
       name: "Energy Savers",
-      cost: results.energySaversTotalCost,
+      cost: results?.energySaversTotalCost || 0,
       fill: COLORS.lima,
     },
     {
       name: "Free Weekends",
-      cost: results.freeWeekendsTotalCost,
+      cost: results?.freeWeekendsTotalCost || 0,
       fill: COLORS.waikawaGray,
     },
   ];
 
-  const savingsOverTimeData = results.chartData.years.map((year, index) => ({
-    year,
-    currentPlan: results.chartData.currentPlanCosts[index],
-    energySavers: results.chartData.energySaversCosts[index],
-    freeWeekends: results.chartData.freeWeekendsCosts[index],
+  const savingsOverTimeData = (results?.chartData || []).map((yearData) => ({
+    year: `Year ${yearData.year}`,
+    energySavers: parseFloat(yearData.energySavers.toFixed(2)),
+    freeWeekends: parseFloat(yearData.freeWeekends.toFixed(2)),
   }));
 
   const CustomTooltip = ({ active, payload, label }) => {
@@ -110,82 +103,62 @@ function ResultsDisplay({ results }) {
       style={fadeIn}
       className="bg-white rounded-lg shadow-lg p-6 mt-6"
     >
-      <h3
-        className="text-3xl font-bold mb-6 text-center"
-        style={{ color: COLORS.madison }}
-      >
-        Your Energy Plan Comparison Results
+      <div className="mb-8 text-center">
+        <p className="text-6xl font-bold text-madison">
+          Unlock immediate savings of{" "}
+          <span className="text-lima text-7xl">
+            <strong>{formatCurrency(results.monthlySavings)}</strong>
+          </span>{" "}
+          each month! Switch to the{" "}
+          <span className="text-lima text-7xl">{results.recommendedPlan}</span>{" "}
+          plan today and start maximizing your savings instantly.
+        </p>
+      </div>
+
+      <h3 className="text-5xl font-bold mb-6 text-center text-madison">
+        Your Detailed Energy Plan Comparison Results
       </h3>
 
-      <div
-        className="bg-lightLima border-l-4 p-6 mb-8 rounded-lg"
-        style={{ borderColor: COLORS.lima }}
-      >
-        <h4
-          className="text-2xl font-semibold mb-2"
-          style={{ color: COLORS.madison }}
-        >
+      <div className="bg-lightLima border-l-4 border-lima p-6 mb-8 rounded-lg">
+        <h4 className="text-3xl font-semibold mb-2 text-madison">
           Potential Savings
         </h4>
-        <animated.p
-          className="font-bold text-5xl"
-          style={{ color: COLORS.lima }}
-        >
-          {savingsAnimation.number.to((val) => formatCurrency(val))}
+        <animated.p className="font-bold text-6xl text-lima">
+          {savingsAnimation.number.to(formatCurrency)}
         </animated.p>
-        <p
-          className="font-bold text-xl mt-2"
-          style={{ color: COLORS.waikawaGray }}
-        >
-          over {results.inputs.contractLength} years!
-        </p>
+        <p className="font-bold text-xl mt-2 text-waikawaGray">over 5 years!</p>
       </div>
 
-      <div
-        className="bg-lightLima border-l-4 p-6 mb-8 rounded-lg"
-        style={{ borderColor: COLORS.madison }}
-      >
-        <h4
-          className="text-2xl font-semibold mb-2"
-          style={{ color: COLORS.madison }}
-        >
-          Break-Even Point
+      <div className="bg-lightLima border-l-4 border-lima p-6 mb-8 rounded-lg">
+        <h4 className="text-2xl font-semibold mb-2 text-madison">
+          Monthly Savings
         </h4>
-        <animated.p
-          className="font-bold text-5xl"
-          style={{ color: COLORS.madison }}
-        >
-          {breakEvenAnimation.number.to((val) => Math.round(val))}
-        </animated.p>
-        <p
-          className="font-bold text-xl mt-2"
-          style={{ color: COLORS.waikawaGray }}
-        >
-          months until you start saving!
+        <p className="font-bold text-5xl text-lima">
+          {formatCurrency(results.monthlySavings)}
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        {totalCostData.map((plan) => (
-          <div key={plan.name} className="bg-white p-6 rounded-lg shadow-md">
-            <h4
-              className="text-xl font-semibold mb-2"
-              style={{ color: COLORS.madison }}
-            >
-              {plan.name}
-            </h4>
-            <p className="text-3xl font-bold" style={{ color: plan.fill }}>
-              {formatCurrency(plan.cost)}
-            </p>
-          </div>
-        ))}
+      <div className="mb-4">
+        <h4 className="text-2xl font-semibold text-madison">Current Plan</h4>
+        <p className="text-3xl font-bold text-red">
+          {formatCurrency(results?.currentPlanTotalCost || 0)}
+        </p>
+      </div>
+      <div className="mb-4">
+        <h4 className="text-2xl font-semibold text-madison">Energy Savers</h4>
+        <p className="text-3xl font-bold text-lima">
+          {formatCurrency(results?.energySaversTotalCost || 0)}
+        </p>
+      </div>
+      <div className="mb-4">
+        <h4 className="text-2xl font-semibold text-madison">Free Weekends</h4>
+        <p className="text-3xl font-bold text-waikawaGray">
+          {formatCurrency(results?.freeWeekendsTotalCost || 0)}
+        </p>
       </div>
 
       <div className="mb-12 bg-white p-6 rounded-lg shadow-md">
-        <h4
-          className="text-2xl font-semibold mb-4"
-          style={{ color: COLORS.madison }}
-        >
+        <h4 className="text-2xl font-semibold mb-4 text-madison">
           Total Cost Comparison
         </h4>
         <ResponsiveContainer width="100%" height={400}>
@@ -199,6 +172,7 @@ function ResultsDisplay({ results }) {
               tick={{ fill: COLORS.madison, fontSize: 14 }}
             />
             <YAxis
+              domain={[0, (results?.currentPlanTotalCost || 0) + 100]} // Adjusted YAxis domain
               tickFormatter={formatCurrency}
               tick={{ fill: COLORS.madison, fontSize: 14 }}
             />
@@ -210,14 +184,11 @@ function ResultsDisplay({ results }) {
       </div>
 
       <div className="mb-12 bg-white p-6 rounded-lg shadow-md">
-        <h4
-          className="text-2xl font-semibold mb-4"
-          style={{ color: COLORS.madison }}
-        >
+        <h4 className="text-2xl font-semibold mb-4 text-madison">
           Savings Over Time
         </h4>
         <ResponsiveContainer width="100%" height={400}>
-          <AreaChart
+          <LineChart
             data={savingsOverTimeData}
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
           >
@@ -227,39 +198,31 @@ function ResultsDisplay({ results }) {
               tick={{ fill: COLORS.madison, fontSize: 14 }}
             />
             <YAxis
+              domain={[0, "dataMax + 200"]}
               tickFormatter={formatCurrency}
               tick={{ fill: COLORS.madison, fontSize: 14 }}
             />
             <Tooltip />
             <Legend />
-            <Area
-              type="monotone"
-              dataKey="currentPlan"
-              stackId="1"
-              stroke={COLORS.red}
-              fill={COLORS.red}
-            />
-            <Area
+            <Line
               type="monotone"
               dataKey="energySavers"
-              stackId="1"
               stroke={COLORS.lima}
               fill={COLORS.lima}
             />
-            <Area
+            <Line
               type="monotone"
               dataKey="freeWeekends"
-              stackId="1"
               stroke={COLORS.waikawaGray}
               fill={COLORS.waikawaGray}
             />
-          </AreaChart>
+          </LineChart>
         </ResponsiveContainer>
       </div>
 
       <div className="text-center p-6 bg-lightLima rounded-lg">
-        <p className="text-3xl font-bold" style={{ color: COLORS.madison }}>
-          {results.recommendedChoice}
+        <p className="text-3xl font-bold text-madison">
+          {results.recommendedPlan}
         </p>
       </div>
 
@@ -269,6 +232,18 @@ function ResultsDisplay({ results }) {
           isVisible={true}
         />
       )}
+
+      {/* Texas Electricity Patterns Button */}
+      <div className="mt-8 text-center">
+        <button
+          onClick={() =>
+            window.open("/texas-electricity-patterns.html", "_blank")
+          }
+          className="py-2 px-4 bg-madison text-white rounded hover:bg-waikawaGray transition duration-300"
+        >
+          View Texas Electricity Consumption Patterns
+        </button>
+      </div>
     </animated.div>
   );
 }
