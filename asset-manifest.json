@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/static/css/main.2795b849.css",
-    "main.js": "/static/js/main.9d547b80.js",
+    "main.js": "/static/js/main.9a1e8f06.js",
     "static/media/JustEnergyLogo.png": "/static/media/JustEnergyLogo.4940860c98d921a79863.png",
     "index.html": "/index.html",
     "main.2795b849.css.map": "/static/css/main.2795b849.css.map",
-    "main.9d547b80.js.map": "/static/js/main.9d547b80.js.map"
+    "main.9a1e8f06.js.map": "/static/js/main.9a1e8f06.js.map"
   },
   "entrypoints": [
     "static/css/main.2795b849.css",
-    "static/js/main.9d547b80.js"
+    "static/js/main.9a1e8f06.js"
   ]
 }
